@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  shopee_security_db:
+    image: "postgres:11-alpine"
+    container_name: "shopee_security_db"
+    ports:
+      - "${SECURITY_DB_PORT}:5432"
+    command: postgres -c config_file=/etc/postgresql.conf
+    restart: unless-stopped
+    volumes:
+      - security_db_volume:/var/lib/postgresql/shopee_data/pgdata
+      - ./docker_config/conf/postgresql.conf:/etc/postgresql.conf
+    environment:
+      POSTGRES_USER: ${SECURITY_DB_USERNAME}
+      POSTGRES_PASSWORD: ${SECURITY_DB_PASSWORD}
+      POSTGRES_DB: ${SECURITY_DB_NAME}
+      PGDATA: /var/lib/postgresql/shopee_data/pgdata
+
+volumes:
+  security_db_volume:
